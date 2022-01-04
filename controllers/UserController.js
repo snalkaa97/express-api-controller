@@ -1,13 +1,15 @@
 const db = require('../config/database')
+const userModel  = require('../models/userModel')
 
-const getUsers = (request, response) => {
-    db.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
-      if (error) {
-        throw error
-      }
-      response.status(200).json(results.rows)
-    })
-  }
+const getUsers =  async (request, response) => { //Contoh pake Model
+    const userData = await userModel.getUsers();
+    const data = {
+        success: true,
+        msg: 'List All users',
+        data: userData.rows,
+    }
+    response.status(200).json(data)
+}
   
   const getUserById = (request, response) => {
     const id = parseInt(request.params.id)
